@@ -14,17 +14,15 @@ namespace DynamicRealTimeBikes.ViewModel
 {
     public class MainWindowViewModel : AbstractNotifyPropertyChanged
     {
-        private LiveBikesViewModel _liveBikesViewModel;
-
         public MainWindowViewModel()
         {
             Dispatcher dispatcher = Application.Current.Dispatcher;
             var schProv = new SchedulerProvider(dispatcher);
             var realTimeModel = new RealTimeModel(schProv);
             _liveBikesViewModel = new LiveBikesViewModel(realTimeModel);
-
         }
 
+        private LiveBikesViewModel _liveBikesViewModel;
         public LiveBikesViewModel LiveBikesViewModel
         {
             get { return _liveBikesViewModel; }

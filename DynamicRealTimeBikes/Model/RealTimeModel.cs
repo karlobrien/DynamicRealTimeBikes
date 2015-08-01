@@ -22,12 +22,15 @@ namespace DynamicRealTimeBikes.Model
             _bikeDataSource = new SourceCache<StationDto, string>(bike => bike.Name);
             _all = _bikeDataSource.AsObservableCache();
 
-            _cleanup = new CompositeDisposable(_all, _bikeDataSource);
+            var data = GenerateRealTimeData();
+            _cleanup = new CompositeDisposable(_all, _bikeDataSource, data);
         }
 
         private IDisposable GenerateRealTimeData()
         {
             var station = new StationDto();
+            station.Name = "Heuston";
+            
             _bikeDataSource.AddOrUpdate(station);
 
             return new CompositeDisposable();
