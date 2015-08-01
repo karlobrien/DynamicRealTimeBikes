@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DynamicRealTimeBikes
+namespace DynamicRealTimeBikes.View
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for LiveBikesView.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class LiveBikesView : UserControl
     {
-        public MainWindow()
+        public LiveBikesView()
         {
             InitializeComponent();
         }

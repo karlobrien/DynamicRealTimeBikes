@@ -1,8 +1,30 @@
-﻿<Window x:Class="DynamicRealTimeBikes.MainWindow"
+﻿<controls:MetroWindow x:Class="DynamicRealTimeBikes.MainWindow"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
-</Window>
+        xmlns:dockablz="clr-namespace:Dragablz.Dockablz;assembly=Dragablz"
+        xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+        Title="MainWindow" Height="350" Width="525"
+        xmlns:client="clr-namespace:DynamicRealTimeBikes.ViewModel"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"   
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance client:MainWindowViewModel, IsDesignTimeCreatable=False}">
+    
+    <dockablz:Layout>
+        <dragablz:TabablzControl x:Name="InitialTabablzControl" ShowDefaultCloseButton="true">
+            <dragablz:TabablzControl.InterTabController>
+                <dragablz:InterTabController />
+            </dragablz:TabablzControl.InterTabController>
+            <TabItem Header="Menu">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Hello World</TextBlock>
+            </TabItem>
+            <TabItem Header="Live Bike Updates">
+                <ContentControl Margin="4" Content="{Binding LiveBikesViewModel}" />
+            </TabItem>
+            <TabItem Header="Bike Card View">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Looks Quite Nice</TextBlock>
+            </TabItem>
+        </dragablz:TabablzControl>
+    </dockablz:Layout>
+</controls:MetroWindow>
