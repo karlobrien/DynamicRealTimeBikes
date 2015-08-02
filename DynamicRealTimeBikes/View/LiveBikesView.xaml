@@ -19,6 +19,10 @@
         </Grid.ColumnDefinitions>
         
         <Label Grid.Row="0" Content="{Binding Name}"></Label>
-        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" AutoGenerateColumns="true" ItemsSource="{Binding Data}"/>
+        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                  IsReadOnly="True"    
+                  EnableColumnVirtualization="True"
+                  EnableRowVirtualization="True"
+                  AutoGenerateColumns="true" ItemsSource="{Binding Data}"/>
     </Grid>
 </UserControl>

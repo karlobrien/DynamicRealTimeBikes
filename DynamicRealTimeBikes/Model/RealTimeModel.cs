@@ -1,5 +1,6 @@
 ﻿using DynamicData;
 using DynamicRealTimeBikes.Common;
+using DynamicRealTimeBikes.Common.Service;
 using DynamicRealTimeBikes.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -15,10 +16,12 @@ namespace DynamicRealTimeBikes.Model
         private readonly ISourceCache<StationDto, string> _bikeDataSource;
         private readonly IDisposable _cleanup;
         private readonly ISchedulerProvider _schProvider;
+        private readonly IBikeService _bikeService;
 
-        public RealTimeModel(ISchedulerProvider schProvider)
+        public RealTimeModel(ISchedulerProvider schProvider, IBikeService bikeService)
         {
             _schProvider = schProvider;
+            _bikeService = bikeService;
             _bikeDataSource = new SourceCache<StationDto, string>(bike => bike.Name);
             _all = _bikeDataSource.AsObservableCache();
 
@@ -26,14 +29,18 @@ namespace DynamicRealTimeBikes.Model
             _cleanup = new CompositeDisposable(_all, _bikeDataSource, data);
         }
 
-        private IDisposable GenerateRealTimeData()
+        private async Task<IDisposable> GenerateRealTimeData()
         {
-            var station = new StationDto();
-            station.Name = "Heuston";
-            
-            _bikeDataSource.AddOrUpdate(station);
+            TimeSpan interval = TimeSpan.FromSeconds(10);           
+            _bikeDataSource.AddOrUpdate(await _bikeService.GetAllStationData());
 
-            return new CompositeDisposable();
+            var bikeRequester = _schProvider.TaskPool.ScheduleRecurringAction(interval, async () =>
+                {
+                    var stationData = await _bikeService.GetAllStationData();
+                    _bikeDataSource.AddOrUpdate(stationData);
+                });
+
+            return new CompositeDisposable(bikeRequester);
         }
 
         private IObservableCache<StationDto, string> _all;

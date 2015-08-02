@@ -1,5 +1,6 @@
 ﻿using DynamicData.Binding;
 using DynamicRealTimeBikes.Common;
+using DynamicRealTimeBikes.Common.Service;
 using DynamicRealTimeBikes.Infrastructure;
 using DynamicRealTimeBikes.Model;
 using System;
@@ -18,7 +19,10 @@ namespace DynamicRealTimeBikes.ViewModel
         {
             Dispatcher dispatcher = Application.Current.Dispatcher;
             var schProv = new SchedulerProvider(dispatcher);
-            var realTimeModel = new RealTimeModel(schProv);
+
+            IDataRequest dataRequest = new DataRequest();
+            IBikeService bikeService = new BikeService(dataRequest);
+            IRealTimeModel realTimeModel = new RealTimeModel(schProv, bikeService);
             _liveBikesViewModel = new LiveBikesViewModel(realTimeModel);
         }
 
