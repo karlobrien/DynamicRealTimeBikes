@@ -18,20 +18,34 @@ namespace DynamicRealTimeBikes.ViewModel
     public class LiveBikesViewModel : AbstractNotifyPropertyChanged, IDisposable
     {
         private readonly IDisposable _cleanUp;
-        private IObservableCollection<StationDto> _data = new ObservableCollectionExtended<StationDto>();
-        private string _name;
+        private IObservableCollection<StationDto> _data = new ObservableCollectionExtended<StationDto>();      
 
         public LiveBikesViewModel(IRealTimeModel model)
         {
+            var filter = new FilterController<StationDto>(t => true);
+            var filterApplier = this.WhenValueChanged(t => t.SearchText)
+                                    .Throttle(TimeSpan.FromMilliseconds(250))
+                                    .Select(BuildFilter)
+                                    .Subscribe(filter.Change);
+
             var connect = model.All
                 .Connect()
+                .Filter(filter)
                 .Transform(t => t)
                 .ObserveOnDispatcher()
                 .Bind(_data)
                 .DisposeMany()
                 .Subscribe();
             
-            _cleanUp = new CompositeDisposable(connect);
+            _cleanUp = new CompositeDisposable(connect, filterApplier);
+        }
+
+        private Func<StationDto, bool> BuildFilter(string searchText)
+        {
+            if (string.IsNullOrEmpty(searchText)) return name => true;
+
+            return str => str.Name.Contains(searchText) ||
+                        str.Name.Contains(searchText);
         }
 
         public void Dispose()
@@ -48,9 +62,14 @@ namespace DynamicRealTimeBikes.ViewModel
             }
         }
 
-        public string Name
+        private string _searchText;
+        public string SearchText
         {
-            get { return "Test"; }
+            get { return _searchText; }
+            set
+            {
+                SetAndRaise(ref _searchText, value);
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using DynamicData.Binding;
 using DynamicRealTimeBikes.Common;
 using DynamicRealTimeBikes.Common.Service;
+using DynamicRealTimeBikes.Common.Service.Tests;
 using DynamicRealTimeBikes.Infrastructure;
 using DynamicRealTimeBikes.Model;
 using System;
@@ -21,7 +22,8 @@ namespace DynamicRealTimeBikes.ViewModel
             var schProv = new SchedulerProvider(dispatcher);
 
             IDataRequest dataRequest = new DataRequest();
-            IBikeService bikeService = new BikeService(dataRequest);
+            //IBikeService bikeService = new BikeService(dataRequest);
+            IBikeService bikeService = new MoqBikeService();
             IRealTimeModel realTimeModel = new RealTimeModel(schProv, bikeService);
             _liveBikesViewModel = new LiveBikesViewModel(realTimeModel);
         }

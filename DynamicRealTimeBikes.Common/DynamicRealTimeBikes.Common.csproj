@@ -71,6 +71,7 @@
     <Compile Include="Service\DataRequest.cs" />
     <Compile Include="Service\IBikeService.cs" />
     <Compile Include="Service\IDataRequest.cs" />
+    <Compile Include="Service\Tests\MoqBikeService.cs" />
     <Compile Include="StationDto.cs" />
   </ItemGroup>
   <ItemGroup>
