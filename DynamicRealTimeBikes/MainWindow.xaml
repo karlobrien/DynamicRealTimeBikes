@@ -12,18 +12,12 @@
         d:DataContext="{d:DesignInstance client:MainWindowViewModel, IsDesignTimeCreatable=False}">
     
     <dockablz:Layout>
-        <dragablz:TabablzControl x:Name="InitialTabablzControl" ShowDefaultCloseButton="true">
+        <dragablz:TabablzControl x:Name="InitialTabablzControl">
             <dragablz:TabablzControl.InterTabController>
                 <dragablz:InterTabController />
             </dragablz:TabablzControl.InterTabController>
-            <TabItem Header="Menu">
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Hello World</TextBlock>
-            </TabItem>
             <TabItem Header="Live Bike Updates">
                 <ContentControl Margin="4" Content="{Binding LiveBikesViewModel}" />
-            </TabItem>
-            <TabItem Header="Bike Card View">
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Looks Quite Nice</TextBlock>
             </TabItem>
         </dragablz:TabablzControl>
     </dockablz:Layout>
